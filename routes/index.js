@@ -1,15 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var firebase = require('firebase');
-var config = {
-  apiKey: "AIzaSyA_cHWW_eAT70amAaaQiO82kdiEJghed9Y",
-  authDomain: "toccaproject.firebaseapp.com",
-  databaseURL: "https://toccaproject.firebaseio.com",
-  projectId: "toccaproject",
-  storageBucket: "toccaproject.appspot.com",
-  messagingSenderId: "229361495798"
-};
-firebase.initializeApp(config);
+var db = require('./db');
 
 router.get('/user-profile', function(req, res, next) {
     res.render('index');
@@ -31,7 +22,7 @@ router.get('/user-profiles', function(req, res, next) {
     startAt = 1;
   }
 
-  firebase.database().ref('/user_profile').orderByChild('timestamp').startAt(startAt).limitToFirst(limit).once('value').then(function(snapshot) {
+  db.getFirebaseData('/user_profile', limit, startAt, function(snapshot){
     var data = snapshot.val();
     var returnArr = [];
 
@@ -47,7 +38,7 @@ router.get('/user-profiles', function(req, res, next) {
     result.userProfiles = returnArr;
 
     res.send(result);
-  })
+  });
 });
 
 module.exports = router;
