@@ -41,8 +41,8 @@ router.get('/user-profiles', function(req, res, next) {
         returnArr.push(item);
     });
     var nextIndex = returnArr.pop().timestamp;
-    
-    result.nextPageIndex = index;
+
+    result.nextPageIndex = nextIndex;
     result.nextPageUrl = "/user-profiles?limit=50&nextPageIndex=" + nextIndex;
     result.userProfiles = returnArr;
 
